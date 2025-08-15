@@ -1,3 +1,11 @@
+ai_grading_results/
+config/
+HW02/
+logs/
+PCA/
+rubrics/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
