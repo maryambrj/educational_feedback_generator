@@ -8,7 +8,7 @@ import nbformat
 import os
 import re
 from typing import Dict, List, Optional, Any
-from data_structures import StudentResponse
+from ..config.data_structures import StudentResponse
 
 class NotebookParser:
     """Enhanced parser that extracts structured content from student notebooks"""

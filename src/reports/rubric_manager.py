@@ -6,7 +6,7 @@ Rubric management system for handling grading criteria and scoring
 import os
 import yaml
 from typing import Dict
-from data_structures import GradingCriterion, ProblemRubric
+from ..config.data_structures import GradingCriterion, ProblemRubric
 
 class RubricManager:
     """Manages grading criteria and scoring systems"""

@@ -1,0 +1,26 @@
+# Test Configuration for Toy Example
+# This file demonstrates the configuration structure
+
+llm_settings:
+  provider: 'mock'  # Use mock for testing
+  model: 'gpt-4'
+  max_tokens: 1500
+  temperature: 0.3
+  api_key: 'test_key_for_mock'
+
+grading_settings:
+  confidence_threshold: 0.7
+  auto_flag_low_confidence: true
+  enable_detailed_feedback: true
+  max_suggestions: 5
+
+output_settings:
+  generate_html_report: true
+  export_detailed_feedback: true
+  create_flagged_report: true
+  save_grading_history: true
+
+system_settings:
+  rubrics_directory: 'rubrics'
+  output_directory: 'ai_grading_results'
+  log_level: 'DEBUG'  # More verbose for testing

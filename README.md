@@ -4,17 +4,27 @@ An intelligent grading system that combines traditional completion-based grading
 
 ## 🚀 Quick Start
 
+### 0. Project Structure
+The project has been reorganized for better maintainability. All source code is now in the `src/` directory, with a clean `main.py` entry point.
+
 ### 1. Setup the System
 ```bash
-# First time setup - creates directories and configuration files
-python integrated_grader.py --setup-ai
-
 # Install dependencies
 pip install -r requirements.txt
+
+# First time setup - creates directories and configuration files
+python src/setup.py
 ```
 
 ### 2. Configure LLM (Optional)
-Edit `config/config.yaml` to add your API keys:
+Create a `.env` file in the root directory with your API keys:
+```bash
+# .env file
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+```
+
+Or edit `config/config.yaml` to add your API keys:
 ```yaml
 llm_settings:
   provider: 'openai'  # or 'anthropic' or 'mock'
@@ -24,17 +34,30 @@ llm_settings:
 
 ### 3. Run Grading Pipeline
 ```bash
-# Full pipeline: rename + traditional + AI grading
-python integrated_grader.py "Homework/HW02" hw2_california_housing --rename-notebooks --ai-grading
+# Main entry point (recommended)
+python main.py "Homework/HW02" hw2_california_housing
 
-# Traditional grading only
-python integrated_grader.py "Homework/HW02_renamed" hw2_california_housing
+# Debug configuration
+python main.py --debug-config
 
-# AI grading on pre-renamed notebooks
-python integrated_grader.py "Homework/HW02_renamed" hw2_california_housing --ai-grading --no-rename
+# Test LLM
+python main.py --test-llm
 ```
 
 ## 📁 System Architecture
+
+### Project Organization
+
+The project is organized into logical packages for better maintainability:
+
+- **`src/core/`**: Core grading functionality and main pipeline
+- **`src/ai_grading/`**: AI-powered grading components and LLM integration
+- **`src/config/`**: Configuration management and data structures
+- **`src/reports/`**: Report generation, rubrics, and feedback
+- **`src/utils/`**: Utility functions, CLI tools, and helper scripts
+- **`src/notebooks/`**: Example notebooks and testing files
+
+See `PROJECT_STRUCTURE.md` for detailed organization information.
 
 ### Core Components
 
@@ -45,22 +68,51 @@ python integrated_grader.py "Homework/HW02_renamed" hw2_california_housing --ai-
 
 ### File Structure
 ```
-your_project/
-├── ai_grader.py                    # Core AI grading system
-├── integrated_grader.py            # Main pipeline script
-├── setup_ai_grader.py             # Setup and configuration
-├── rename_notebooks.py            # Your existing renaming script
-├── notebook_grader.py    # Your existing grading script
-├── config/
+AI-Grader/
+├── main.py                          # Main entry point
+├── requirements.txt                 # Python dependencies
+├── .env                            # Environment variables (API keys)
+├── README.md                       # This documentation
+├── PROJECT_STRUCTURE.md            # Detailed structure guide
+│
+├── src/                            # Source code package
+│   ├── core/                      # Core grading functionality
+│   │   ├── main_ai_grader.py     # Main grading pipeline
+│   │   ├── notebook_grader.py    # Traditional notebook grading
+│   │   ├── notebook_parser.py    # Notebook structure parsing
+│   │   └── notebook_to_markdown.py # Notebook conversion utilities
+│   │
+│   ├── ai_grading/               # AI-powered grading components
+│   │   ├── ai_grading_agent.py   # Main AI grading agent
+│   │   ├── enhanced_grading_agent.py # Enhanced grading capabilities
+│   │   ├── llm_grader.py         # LLM integration for grading
+│   │   └── llm_interface.py      # Abstract LLM interface
+│   │
+│   ├── config/                    # Configuration management
+│   │   ├── config_manager.py     # Configuration loading/validation
+│   │   └── data_structures.py    # Data models and structures
+│   │
+│   ├── reports/                   # Report generation and rubrics
+│   │   ├── report_generator.py   # HTML and CSV report generation
+│   │   └── rubric_manager.py     # Rubric loading and management
+│   │
+│   ├── utils/                     # Utility functions and scripts
+│   │   ├── solution_cli.py       # Command-line solution tools
+│   │   ├── solution_generator.py # Solution generation utilities
+│   │   ├── file_checker.py       # File validation utilities
+│   │   ├── rename_notebooks.py   # Notebook renaming utilities
+│   │   └── debug_grader.py       # Debugging and testing tools
+│   │
+│   ├── notebooks/                 # Jupyter notebook examples
+│   └── setup.py                  # Setup and configuration script
+│
+├── config/                         # Configuration files
 │   └── config.yaml                # System configuration
-├── rubrics/
-│   ├── hw2_california_housing.yaml # Assignment-specific rubrics
-│   └── general_template.yaml      # Template for new assignments
+├── rubrics/                       # Assignment rubrics
 ├── ai_grading_results/            # AI grading outputs
-│   ├── ai_grading_results.csv     # Summary scores
-│   ├── detailed_feedback/         # Individual student reports
-│   └── flagged_for_review.csv     # Items needing manual review
-└── requirements.txt               # Python dependencies
+├── tests/                         # Test suite
+├── docs/                          # Documentation
+└── examples/                      # Example configurations
 ```
 
 ## 🎯 Grading Workflow
@@ -123,6 +175,17 @@ part_1:
 - **Guidelines**: Detailed instructions for consistent grading
 
 ## 🤖 LLM Integration
+
+### Environment Variables (Recommended)
+
+Create a `.env` file in the root directory for your API keys:
+```bash
+# .env file
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+```
+
+**Note**: The `.env` file is automatically ignored by git for security.
 
 ### Supported Providers
 
@@ -299,17 +362,13 @@ llm_settings:
 
 ```bash
 # Setup (first time only)
-python integrated_grader.py --setup-ai
+python src/setup.py
 
 # Configure for OpenAI GPT-4
-# Edit config/config.yaml with your API key
+# Create .env file with your API key or edit config/config.yaml
 
 # Grade homework submission
-python integrated_grader.py \
-    "Homework/HW02" \
-    hw2_california_housing \
-    --rename-notebooks \
-    --ai-grading
+python main.py "Homework/HW02" hw2_california_housing
 ```
 
 **Expected Output:**
@@ -322,23 +381,19 @@ python integrated_grader.py \
 
 ```bash
 # For instructors who want to try the system gradually
-python integrated_grader.py \
-    "Homework/HW02" \
-    hw2_california_housing \
-    --rename-notebooks
+python main.py "Homework/HW02" hw2_california_housing
 
 # This runs your existing grading pipeline with enhancements
 ```
 
-### Example 3: AI Grading Existing Renamed Notebooks
+### Example 3: Debug and Test
 
 ```bash
-# If you already have renamed notebooks
-python integrated_grader.py \
-    "Homework/HW02_renamed" \
-    hw2_california_housing \
-    --ai-grading \
-    --no-rename
+# Debug configuration
+python main.py --debug-config
+
+# Test LLM connection
+python main.py --test-llm
 ```
 
 ## 🤝 Contributing

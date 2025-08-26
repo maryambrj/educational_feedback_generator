@@ -6,8 +6,8 @@ LLM-based grading engine for evaluating student responses
 import json
 from datetime import datetime
 from typing import List
-from data_structures import StudentResponse, ProblemRubric, GradingResult
-from llm_interface import LLMInterface
+from ..config.data_structures import StudentResponse, ProblemRubric, GradingResult
+from .llm_interface import LLMInterface
 
 class LLMGrader:
     """Core grading logic using language models"""

@@ -5,12 +5,12 @@ Main AI Grading Agent that coordinates all components
 
 import os
 from typing import List, Dict
-from data_structures import GradingResult
-from notebook_parser import NotebookParser
-from rubric_manager import RubricManager
+from ..config.data_structures import GradingResult
+from ..core.notebook_parser import NotebookParser
+from ..reports.rubric_manager import RubricManager
 from llm_grader import LLMGrader
 from report_generator import ReportGenerator
-from llm_interface import LLMInterface
+from .llm_interface import LLMInterface
 
 class AIGradingAgent:
     """Main coordinating class for the AI grading system"""

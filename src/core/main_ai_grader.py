@@ -5,9 +5,9 @@ Main entry point for the AI grading system
 
 import sys
 import os
-from config_manager import ConfigManager, LLMFactory
-from ai_grading_agent import AIGradingAgent
-from report_generator import create_combined_report
+from ..config.config_manager import ConfigManager, LLMFactory
+from ..ai_grading.ai_grading_agent import AIGradingAgent
+from ..reports.report_generator import create_combined_report
 
 def debug_configuration(config_path: str = "config/config.yaml"):
     """Debug function to check configuration setup"""
@@ -43,7 +43,7 @@ def debug_configuration(config_path: str = "config/config.yaml"):
             print(f"  Created LLM: {llm.get_model_name()}")
             
             # Test LLM response
-            from llm_interface import MockLLM
+            from ..ai_grading.llm_interface import MockLLM
             if isinstance(llm, MockLLM):
                 print(f"  Status: Using Mock LLM (no real API calls)")
             else:
@@ -108,7 +108,7 @@ def enhanced_grading_pipeline(directory_path: str, assignment_id: str, output_cs
     except Exception as e:
         print(f"Warning: Could not load configuration: {e}")
         print("Using MockLLM as fallback.")
-        from llm_interface import MockLLM
+        from ..ai_grading.llm_interface import MockLLM
         llm = MockLLM()
     
     ai_grader = AIGradingAgent(llm)

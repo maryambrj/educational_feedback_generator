@@ -7,7 +7,7 @@ import os
 import csv
 from datetime import datetime
 from typing import List, Dict, Tuple
-from data_structures import GradingResult
+from ..config.data_structures import GradingResult
 
 class ReportGenerator:
     """Generates various reports from grading results"""

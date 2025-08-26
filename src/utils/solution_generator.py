@@ -10,9 +10,9 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from datetime import datetime
 
-from llm_interface import LLMInterface
-from data_structures import ProblemRubric
-from rubric_manager import RubricManager
+from ..ai_grading.llm_interface import LLMInterface
+from ..config.data_structures import ProblemRubric
+from ..reports.rubric_manager import RubricManager
 
 @dataclass
 class ProblemSolution:

@@ -5,13 +5,13 @@ Enhanced AI Grading Agent that incorporates reference solutions for better gradi
 
 import os
 from typing import List, Dict, Optional
-from data_structures import GradingResult
-from notebook_parser import NotebookParser
-from rubric_manager import RubricManager
+from ..config.data_structures import GradingResult
+from ..core.notebook_parser import NotebookParser
+from ..reports.rubric_manager import RubricManager
 from llm_grader import LLMGrader
 from report_generator import ReportGenerator
 from solution_generator import SolutionGenerator, ProblemSolution
-from llm_interface import LLMInterface
+from .llm_interface import LLMInterface
 
 class EnhancedAIGradingAgent:
     """Enhanced grading agent that uses reference solutions for improved assessment"""
