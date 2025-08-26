@@ -20,7 +20,7 @@ def main():
         sys.exit(1)
     
     # Change to toy example directory and run
-    toy_example_dir = "tests/toy_example"
+    toy_example_dir = "examples/toy_example"
     if not os.path.exists(toy_example_dir):
         print("❌ Error: Toy example directory not found")
         sys.exit(1)

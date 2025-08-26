@@ -13,7 +13,9 @@ import pandas as pd
 from pathlib import Path
 
 # Add src directory to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, '..', '..', 'src')
+sys.path.insert(0, src_dir)
 
 def setup_toy_example():
     """Set up the toy example environment"""
@@ -31,8 +33,11 @@ def setup_toy_example():
     
     # Copy data to notebooks directory
     import shutil
-    src_data = "tests/toy_example/student_data.csv"
-    dst_data = "tests/toy_example/notebooks/student_data.csv"
+    src_data = "student_data.csv"
+    dst_data = "notebooks/student_data.csv"
+    
+    # Ensure notebooks directory exists
+    os.makedirs("notebooks", exist_ok=True)
     shutil.copy2(src_data, dst_data)
     print("✅ Dataset copied to notebooks directory")
     
@@ -43,10 +48,14 @@ def run_traditional_grading():
     print("\n📝 Running Traditional Grading...")
     
     try:
+        # Import using absolute path to avoid relative import issues
+        import sys
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
         from core.notebook_grader import process_student_notebooks
         
-        notebooks_dir = "tests/toy_example/notebooks"
-        output_csv = "tests/toy_example/traditional_grades.csv"
+        notebooks_dir = "notebooks"
+        output_csv = "traditional_grades.csv"
         
         # Run traditional grading
         process_student_notebooks(notebooks_dir, output_csv)
@@ -87,7 +96,7 @@ def run_ai_grading():
         ai_grader = AIGradingAgent(llm)
         
         # Grade notebooks
-        notebooks_dir = "tests/toy_example/notebooks"
+        notebooks_dir = "notebooks"
         assignment_id = "toy_data_analysis"
         
         ai_results = ai_grader.grade_directory(notebooks_dir, assignment_id)
@@ -96,7 +105,7 @@ def run_ai_grading():
         print(f"Graded {len(ai_results)} notebooks")
         
         # Export results
-        output_dir = "tests/toy_example/ai_grading_results"
+        output_dir = "ai_grading_results"
         ai_grader.export_results(output_dir)
         
         return True
@@ -114,8 +123,8 @@ def run_combined_report():
     try:
         from reports.report_generator import create_combined_report
         
-        notebooks_dir = "tests/toy_example/notebooks"
-        traditional_csv = "tests/toy_example/traditional_grades.csv"
+        notebooks_dir = "notebooks"
+        traditional_csv = "traditional_grades.csv"
         
         # Mock AI results for demonstration
         ai_results = {
@@ -154,10 +163,10 @@ def display_summary():
     print("=" * 60)
     
     print("\n📁 Generated Files:")
-    print("├── tests/toy_example/student_data.csv")
-    print("├── tests/toy_example/traditional_grades.csv")
-    print("├── tests/toy_example/ai_grading_results/")
-    print("└── tests/toy_example/combined_grading_report.html")
+    print("├── examples/toy_example/student_data.csv")
+    print("├── examples/toy_example/traditional_grades.csv")
+    print("├── examples/toy_example/ai_grading_results/")
+    print("└── examples/toy_example/combined_grading_report.html")
     
     print("\n📊 What You Can Test:")
     print("1. Traditional grading (completion-based)")
@@ -185,8 +194,8 @@ def main():
     print("This will demonstrate the complete grading workflow")
     print("using sample notebooks and mock AI responses.\n")
     
-    # Change to toy example directory
-    os.chdir("tests/toy_example")
+    # Change to toy example directory (we're already in examples/toy_example/)
+    # os.chdir("examples/toy_example")  # No need to change directory since we're already here
     
     # Run the complete workflow
     success = True

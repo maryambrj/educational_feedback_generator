@@ -9,17 +9,20 @@ import os
 import re
 from typing import Dict, List, Optional, Any
 from ..config.data_structures import StudentResponse
+from ..utils.student_id_manager import StudentIDManager
 
 class NotebookParser:
     """Enhanced parser that extracts structured content from student notebooks"""
     
-    def __init__(self):
+    def __init__(self, id_manager: Optional[StudentIDManager] = None, use_anonymization: bool = False):
         self.problem_patterns = [
             r'##\s*Part\s*(\d+):\s*(.+)',
             r'##\s*Problem\s*(\d+):\s*(.+)',
             # r'____',
             # r'---'  # Separator pattern from your example
         ]
+        self.id_manager = id_manager
+        self.use_anonymization = use_anonymization
     
     def parse_notebook(self, notebook_path: str) -> Dict[str, Any]:
         """Parse notebook and extract structured problem-response pairs"""
@@ -27,16 +30,27 @@ class NotebookParser:
         with open(notebook_path, 'r', encoding='utf-8') as file:
             notebook = nbformat.read(file, as_version=4)
         
-        student_name = self._extract_student_name(notebook_path)
+        # Extract real name from filename
+        real_student_name = self._extract_student_name(notebook_path)
+        
+        # Determine student identifier to use
+        if self.use_anonymization and self.id_manager:
+            student_identifier = self.id_manager.generate_anonymous_id(real_student_name)
+        else:
+            student_identifier = real_student_name
+        
         problems = self._identify_problems(notebook)
         responses = self._extract_responses(notebook, problems)
         
         return {
-            'student_name': student_name,
+            'student_name': student_identifier,  # This could be real name or anonymous ID
+            'student_id': student_identifier,    # New field for consistency
+            'real_name': real_student_name,      # Always store real name for mapping
             'notebook_path': notebook_path,
             'problems': problems,
             'responses': responses,
-            'total_cells': len(notebook['cells'])
+            'total_cells': len(notebook['cells']),
+            'anonymized': self.use_anonymization
         }
     
     def _extract_student_name(self, notebook_path: str) -> str:

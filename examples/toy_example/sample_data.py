@@ -37,11 +37,8 @@ def create_sample_dataset():
     # Create DataFrame
     df = pd.DataFrame(data)
     
-    # Save to CSV
-    output_dir = 'tests/toy_example'
-    os.makedirs(output_dir, exist_ok=True)
-    
-    csv_path = os.path.join(output_dir, 'student_data.csv')
+    # Save to CSV (in current directory since we're already in examples/toy_example/)
+    csv_path = 'student_data.csv'
     df.to_csv(csv_path, index=False)
     
     print(f"✅ Created sample dataset: {csv_path}")

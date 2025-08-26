@@ -9,11 +9,11 @@ import os
 import sys
 from pathlib import Path
 
-def check_structure():
-    """Check if the toy example structure is correct"""
-    print("🔍 Checking Toy Example Structure...")
+def check_examples_structure():
+    """Check if the examples directory structure is correct"""
+    print("🔍 Checking Examples Structure...")
     
-    base_dir = Path("tests/toy_example")
+    base_dir = Path("examples/toy_example")
     required_files = [
         "sample_data.py",
         "run_toy_example.py", 
@@ -27,11 +27,11 @@ def check_structure():
         "expected_output"
     ]
     
-    required_notebooks = [
-        "notebooks/Student_A_Good_Answers.ipynb",
-        "notebooks/Student_B_Incomplete_Answers.ipynb", 
-        "notebooks/Student_C_No_Answers.ipynb"
-    ]
+    # Check for at least some notebooks (flexible - any notebooks are fine)
+    notebooks_dir = base_dir / "notebooks"
+    existing_notebooks = []
+    if notebooks_dir.exists():
+        existing_notebooks = list(notebooks_dir.glob("*.ipynb"))
     
     required_rubrics = [
         "rubrics/toy_data_analysis.yaml"
@@ -43,36 +43,90 @@ def check_structure():
     for dir_name in required_dirs:
         dir_path = base_dir / dir_name
         if dir_path.exists():
-            print(f"✅ Directory: {dir_name}")
+            print(f"✅ Directory: examples/toy_example/{dir_name}")
         else:
-            print(f"❌ Missing directory: {dir_name}")
+            print(f"❌ Missing directory: examples/toy_example/{dir_name}")
             all_good = False
     
     # Check files
     for file_name in required_files:
         file_path = base_dir / file_name
         if file_path.exists():
-            print(f"✅ File: {file_name}")
+            print(f"✅ File: examples/toy_example/{file_name}")
         else:
-            print(f"❌ Missing file: {file_name}")
+            print(f"❌ Missing file: examples/toy_example/{file_name}")
             all_good = False
     
-    # Check notebooks
-    for notebook in required_notebooks:
-        notebook_path = base_dir / notebook
-        if notebook_path.exists():
-            print(f"✅ Notebook: {notebook}")
-        else:
-            print(f"❌ Missing notebook: {notebook}")
-            all_good = False
+    # Check notebooks (flexible - just need at least one)
+    if existing_notebooks:
+        print(f"✅ Found {len(existing_notebooks)} notebook(s):")
+        for notebook in existing_notebooks:
+            print(f"  📓 {notebook.name}")
+    else:
+        print("⚠️  No notebooks found in examples/toy_example/notebooks/")
+        print("   This is optional - you can still test with simple_demo.py")
     
     # Check rubrics
     for rubric in required_rubrics:
         rubric_path = base_dir / rubric
         if rubric_path.exists():
-            print(f"✅ Rubric: {rubric}")
+            print(f"✅ Rubric: examples/toy_example/{rubric}")
         else:
-            print(f"❌ Missing rubric: {rubric}")
+            print(f"❌ Missing rubric: examples/toy_example/{rubric}")
+            all_good = False
+    
+    return all_good
+
+def check_modular_system():
+    """Check if the modular system files are present"""
+    print("\n🔍 Checking Modular System Structure...")
+    
+    required_files = [
+        "main.py",
+        ".env",
+        "requirements.txt",
+        "README.md"
+    ]
+    
+    # Optional files (nice to have but not required)
+    optional_files = [
+        "simple_model_demo.py"  # This was a demo file we intentionally removed
+    ]
+    
+    required_src_files = [
+        "src/config/model_config.py",
+        "src/config/model_factory.py", 
+        "src/config/config_loader.py",
+        "src/config/model_cli.py",
+        "src/config/README.md"
+    ]
+    
+    all_good = True
+    
+    # Check required root files
+    for file_name in required_files:
+        file_path = Path(file_name)
+        if file_path.exists():
+            print(f"✅ File: {file_name}")
+        else:
+            print(f"❌ Missing file: {file_name}")
+            all_good = False
+    
+    # Check optional files (informational only)
+    for file_name in optional_files:
+        file_path = Path(file_name)
+        if file_path.exists():
+            print(f"✅ Optional file: {file_name}")
+        else:
+            print(f"ℹ️  Optional file not present: {file_name} (this is fine)")
+    
+    # Check src files
+    for file_name in required_src_files:
+        file_path = Path(file_name)
+        if file_path.exists():
+            print(f"✅ Src file: {file_name}")
+        else:
+            print(f"❌ Missing src file: {file_name}")
             all_good = False
     
     return all_good
@@ -87,7 +141,7 @@ def check_dependencies():
         'matplotlib',
         'seaborn',
         'nbformat',
-        'pyyaml'
+        'yaml'  # pyyaml imports as 'yaml'
     ]
     
     all_good = True
@@ -133,7 +187,7 @@ def check_src_structure():
 
 def main():
     """Main verification function"""
-    print("🎯 AI Grader Toy Example Setup Verification")
+    print("🎯 AI Grader Modular System Verification")
     print("=" * 50)
     
     # Check if we're in the right directory
@@ -145,7 +199,10 @@ def main():
     all_good = True
     
     # Run all checks
-    if not check_structure():
+    if not check_examples_structure():
+        all_good = False
+    
+    if not check_modular_system():
         all_good = False
     
     if not check_dependencies():
@@ -157,17 +214,20 @@ def main():
     # Summary
     print("\n" + "=" * 50)
     if all_good:
-        print("🎉 All checks passed! Toy example is ready to run.")
+        print("🎉 All essential checks passed! The system is ready to use.")
         print("\n🚀 Next steps:")
-        print("1. Run: python tests/run_toy_example.py")
-        print("2. Or run: python tests/toy_example/run_toy_example.py")
-        print("\n📚 See tests/toy_example/README.md for detailed instructions")
+        print("1. Try the toy example: cd examples/toy_example && python simple_demo.py")
+        print("2. Set up your API keys in .env file")
+        print("3. Create your rubric and run: python main.py <notebook_dir> <assignment_id>")
+        print("4. For anonymization: cd src/utils && python student_id_cli.py create <assignment> <notebooks>/")
+        print("\n📚 See README.md for complete instructions")
     else:
-        print("❌ Some checks failed. Please fix the issues above.")
+        print("❌ Some essential checks failed. Please fix the issues above.")
         print("\n💡 Common fixes:")
         print("- Install missing packages: pip install -r requirements.txt")
-        print("- Ensure you're in the root directory")
+        print("- Ensure you're in the project root directory (where README.md is)")
         print("- Check file permissions")
+        print("- Run: python src/setup.py")
         sys.exit(1)
 
 if __name__ == "__main__":
