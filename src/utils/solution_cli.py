@@ -6,9 +6,9 @@ Command-line interface for the Solution Generator module
 import sys
 import os
 import argparse
-from config_manager import ConfigManager, LLMFactory
-from solution_generator import SolutionGenerator
-from enhanced_grading_agent import EnhancedAIGradingAgent
+from ..config.config_manager import ConfigManager, LLMFactory
+from .solution_generator import SolutionGenerator
+from ..ai_grading.enhanced_grading_agent import EnhancedAIGradingAgent
 
 def generate_solutions_for_assignment(assignment_id: str, output_dir: str = None):
     """Generate reference solutions for a specific assignment"""

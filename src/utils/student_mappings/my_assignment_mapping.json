@@ -1,0 +1,14 @@
+{
+  "salt": "afdaff8f406fe409e04aa3a34ec0b478",
+  "encrypted": true,
+  "warning": "This file contains sensitive student data. Protect accordingly.",
+  "data": {
+    "assignment_id": "my_assignment",
+    "mappings": {
+      "Student C No Answers": "STUDENT_1000",
+      "Student B Incomplete Answers": "STUDENT_1001"
+    },
+    "created_at": "2025-08-26T18:53:16.999387",
+    "total_students": 2
+  }
+}
