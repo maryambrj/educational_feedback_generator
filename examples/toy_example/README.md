@@ -43,14 +43,14 @@ python run_toy_example.py
 ## 🔄 What Happens
 
 1. **📊 Data Generation**: Creates realistic student dataset
-2. **📝 Traditional Grading**: Runs completion-based grading
+2. **📝 ICAs**: Runs completion-based grading
 3. **🤖 AI Grading**: Uses mock LLM for content analysis
 4. **📊 Combined Report**: Generates comprehensive HTML report
 5. **📁 Output Files**: Saves all results for inspection
 
 ## 📊 Expected Results
 
-### Traditional Grading
+### ICAs
 - **Student A**: High completion rate, good grade
 - **Student B**: Medium completion rate, moderate grade
 - **Student C**: Low completion rate, poor grade
@@ -69,7 +69,7 @@ The system will automatically detect:
 ## 🎯 Learning Objectives
 
 This toy example demonstrates:
-- ✅ **Traditional Grading**: Completion-based assessment
+- ✅ **ICAs**: Completion-based assessment
 - ✅ **AI Grading**: Content quality analysis
 - ✅ **Rubric Management**: Structured grading criteria
 - ✅ **Report Generation**: Comprehensive feedback
@@ -122,7 +122,7 @@ After running the toy example:
 
 You'll know the toy example worked when you see:
 - ✅ Sample dataset generated
-- ✅ Traditional grading completed with results
+- ✅ ICAs completed with results
 - ✅ AI grading completed (mock responses)
 - ✅ Combined report generated
 - ✅ All output files created successfully

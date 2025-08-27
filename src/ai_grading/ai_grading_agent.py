@@ -8,8 +8,8 @@ from typing import List, Dict
 from ..config.data_structures import GradingResult
 from ..core.notebook_parser import NotebookParser
 from ..reports.rubric_manager import RubricManager
-from llm_grader import LLMGrader
-from report_generator import ReportGenerator
+from .llm_grader import LLMGrader
+from ..reports.report_generator import ReportGenerator
 from .llm_interface import LLMInterface
 
 class AIGradingAgent:
@@ -44,7 +44,7 @@ class AIGradingAgent:
                 context = f"Assignment: {assignment_id}"
                 
                 result = self.grader.grade_response(response, rubric, context)
-                result.student_name = student_name
+                result.student_id = student_name
                 
                 notebook_results.append(result)
                 print(f"  Graded {response.problem_id}: {result.total_score}/{result.max_possible} ({result.percentage:.1f}%)")

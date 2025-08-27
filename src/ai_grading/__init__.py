@@ -2,10 +2,7 @@
 AI-powered grading components for the Notebook Grading System.
 """
 
-from .ai_grading_agent import AIGradingAgent
-from .enhanced_grading_agent import EnhancedGradingAgent
-from .llm_grader import LLMGrader
-from .llm_interface import MockLLM, OpenAIGPT, AnthropicClaude
+# Avoid circular imports - import modules directly when needed
 
 __all__ = [
     'AIGradingAgent',

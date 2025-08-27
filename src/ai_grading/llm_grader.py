@@ -157,7 +157,7 @@ Focus on providing actionable feedback that helps the student improve both their
             
             return GradingResult(
                 problem_id=response.problem_id,
-                student_name="",  # Will be filled in by calling function
+                student_id="",  # Will be filled in by calling function
                 scores=scores,
                 total_score=total_score,
                 max_possible=rubric.total_points,
@@ -178,7 +178,7 @@ Focus on providing actionable feedback that helps the student improve both their
         """Create error result when grading fails"""
         return GradingResult(
             problem_id=response.problem_id,
-            student_name="",
+            student_id="",
             scores={crit.name: 0 for crit in rubric.criteria},
             total_score=0,
             max_possible=rubric.total_points,

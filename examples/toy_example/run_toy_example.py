@@ -44,8 +44,8 @@ def setup_toy_example():
     return True
 
 def run_traditional_grading():
-    """Run traditional completion-based grading"""
-    print("\n📝 Running Traditional Grading...")
+    """Run ICAs completion-based grading"""
+    print("\n📝 Running ICAs...")
     
     try:
         # Import using absolute path to avoid relative import issues
@@ -57,23 +57,23 @@ def run_traditional_grading():
         notebooks_dir = "notebooks"
         output_csv = "traditional_grades.csv"
         
-        # Run traditional grading
+        # Run ICAs
         process_student_notebooks(notebooks_dir, output_csv)
         
         # Display results
         if os.path.exists(output_csv):
             df = pd.read_csv(output_csv)
-            print("✅ Traditional grading completed!")
-            print("\nTraditional Grading Results:")
+            print("✅ ICAs completed!")
+            print("\nICAs Results:")
             print("=" * 50)
             print(df.to_string(index=False))
             return True
         else:
-            print("❌ Traditional grading output not found")
+            print("❌ ICAs output not found")
             return False
             
     except Exception as e:
-        print(f"❌ Error in traditional grading: {e}")
+        print(f"❌ Error in ICAs: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -145,7 +145,7 @@ def run_combined_report():
             }
         }
         
-        create_combined_report(notebooks_dir, traditional_csv, ai_results, "toy_data_analysis")
+        create_combined_report(notebooks_dir, traditional_csv, ai_results, "toy_data_analysis", "ica")
         
         print("✅ Combined report generated!")
         return True
@@ -169,7 +169,7 @@ def display_summary():
     print("└── examples/toy_example/combined_grading_report.html")
     
     print("\n📊 What You Can Test:")
-    print("1. Traditional grading (completion-based)")
+    print("1. ICAs (completion-based)")
     print("2. AI grading (content analysis)")
     print("3. Combined reporting")
     print("4. Missing answer detection")

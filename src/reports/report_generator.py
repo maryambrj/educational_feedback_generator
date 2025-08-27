@@ -139,10 +139,10 @@ class ReportGenerator:
                 })
 
 def create_combined_report(directory_path: str, traditional_csv: str, 
-                         ai_results: Dict, assignment_id: str):
+                         ai_results: Dict, assignment_id: str, mode: str = "homework"):
     """Create a combined HTML report showing both traditional and AI grading"""
     
-    # Load traditional grading results
+    # Load ICAs results
     traditional_results = {}
     traditional_csv_path = os.path.join(directory_path, os.path.basename(traditional_csv))
     
@@ -313,9 +313,18 @@ def create_combined_report(directory_path: str, traditional_csv: str,
             <div class="metric-label">Need Manual Check</div>
         </div>
         <div class="card">
-            <h3>Grading Methods</h3>
+            <h3>Grading Methods</h3>"""
+    
+    # Add grading method info based on mode
+    if mode == 'ica':
+        html_content += f"""
             <div class="metric-label">Traditional: Completion-based</div>
-            <div class="metric-label">AI: Content-based</div>
+            <div class="metric-label">AI: Content-based</div>"""
+    else:  # homework mode
+        html_content += f"""
+            <div class="metric-label">AI: Content-based with rubric</div>"""
+    
+    html_content += f"""
         </div>
     </div>
 """
@@ -326,10 +335,10 @@ def create_combined_report(directory_path: str, traditional_csv: str,
         if not ai_student_results:
             continue
             
-        student_name = ai_student_results[0].student_name
+        student_name = ai_student_results[0].student_id
         student_id += 1
         
-        # Get traditional grading data
+        # Get ICAs data
         traditional_data = traditional_results.get(student_name, {})
         
         html_content += f"""
@@ -340,15 +349,21 @@ def create_combined_report(directory_path: str, traditional_csv: str,
             </h3>
         </div>
         <div class="student-content" id="content-{student_id}">
-            <div class="grade-comparison">
+            <div class="grade-comparison">"""
+        
+        # Add traditional grade section only for ICA mode
+        if mode == 'ica':
+            html_content += f"""
                 <div class="traditional-grade">
-                    <h4>Traditional Grading (Completion)</h4>
+                    <h4>ICAs (Completion)</h4>
                     <p><strong>Final Grade:</strong> {traditional_data.get('Final Grade', 'N/A')}/4</p>
                     <p><strong>Code Cells:</strong> {traditional_data.get('Code Cells Answered (%)', 'N/A')}</p>
                     <p><strong>Text Cells:</strong> {traditional_data.get('Markdown Cells Answered (%)', 'N/A')}</p>
                     <p><strong>Total Answered:</strong> {traditional_data.get('Total Answered (%)', 'N/A')}</p>
                     <p><strong>Missing Answers:</strong> {traditional_data.get('Missing Answers Count', 'N/A')}</p>
-                </div>
+                </div>"""
+        
+        html_content += f"""
                 <div class="ai-grade">
                     <h4>AI Grading (Content Quality)</h4>
 """

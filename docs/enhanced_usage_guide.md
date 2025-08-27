@@ -183,7 +183,7 @@ The system automatically flags problems for manual review when:
 1. **Monitor confidence scores** - consistently low scores may indicate prompt issues
 2. **Analyze reasoning quality** - poor quality suggests prompt engineering needs
 3. **Review flagged items** - patterns may reveal systematic issues
-4. **Compare with traditional grading** - validate AI performance
+4. **Compare with ICAs** - validate AI performance
 
 ### For Reliability
 1. **Use multiple attempts** for important assessments

@@ -69,15 +69,15 @@ def enhanced_grading_pipeline(directory_path: str, assignment_id: str, output_cs
     print("ENHANCED GRADING PIPELINE")
     print("=" * 60)
     
-    # Step 1: Traditional grading (using existing system)
-    print("Step 1: Running traditional completion-based grading...")
+    # Step 1: ICAs (using existing system)
+    print("Step 1: Running ICAs completion-based grading...")
     
     # Import and use existing grading functions
     try:
         from notebook_grader import process_student_notebooks
         process_student_notebooks(directory_path, output_csv)
     except ImportError:
-        print("Warning: notebook_grader not found. Skipping traditional grading.")
+        print("Warning: notebook_grader not found. Skipping ICAs.")
     
     # Step 2: AI-based grading
     print("\nStep 2: Running AI-based content grading...")
@@ -123,7 +123,7 @@ def enhanced_grading_pipeline(directory_path: str, assignment_id: str, output_cs
     
     # Step 4: Create combined report
     print("\nStep 4: Creating combined grading report...")
-    create_combined_report(directory_path, output_csv, ai_results, assignment_id)
+    create_combined_report(directory_path, output_csv, ai_results, assignment_id, "homework")
     
     print("\n" + "=" * 60)
     print("GRADING PIPELINE COMPLETE!")

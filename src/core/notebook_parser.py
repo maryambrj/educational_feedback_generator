@@ -16,8 +16,8 @@ class NotebookParser:
     
     def __init__(self, id_manager: Optional[StudentIDManager] = None, use_anonymization: bool = False):
         self.problem_patterns = [
-            r'##\s*Part\s*(\d+):\s*(.+)',
-            r'##\s*Problem\s*(\d+):\s*(.+)',
+            r'##\s*Part\s*(\d+)[\.:]\s*(.+)',  # Allow both colon and period
+            r'##\s*Problem\s*(\d+)[\.:]\s*(.+)',  # Allow both colon and period
             # r'____',
             # r'---'  # Separator pattern from your example
         ]

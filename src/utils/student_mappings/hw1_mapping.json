@@ -1,0 +1,14 @@
+{
+  "salt": "42a04416a81f6e5cda6ab51c1e70ec4a",
+  "encrypted": true,
+  "warning": "This file contains sensitive student data. Protect accordingly.",
+  "data": {
+    "assignment_id": "hw1",
+    "mappings": {
+      "HW01 SurveysAndSyllabusAndReading-STUDENT": "STUDENT_1000",
+      "berijanian maryam": "STUDENT_1001"
+    },
+    "created_at": "2025-08-26T19:32:54.584362",
+    "total_students": 2
+  }
+}
