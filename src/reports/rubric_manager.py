@@ -24,14 +24,17 @@ class RubricManager:
         if assignment_id in self.loaded_rubrics:
             return self.loaded_rubrics[assignment_id]
         
-        rubric_path = os.path.join(self.rubrics_directory, f"{assignment_id}.yaml")
+        rubric_path = os.path.join(self.rubrics_directory, f"{assignment_id}.txt")
         
         if not os.path.exists(rubric_path):
             # Create default rubric if none exists
             self._create_default_rubric(assignment_id)
         
         with open(rubric_path, 'r', encoding='utf-8') as file:
-            rubric_data = yaml.safe_load(file)
+            rubric_content = file.read().strip()
+        
+        # Parse txt rubric format - for now, create a simple structure
+        rubric_data = self._parse_txt_rubric(rubric_content, assignment_id)
         
         # Convert to ProblemRubric objects
         problem_rubrics = {}
@@ -130,12 +133,63 @@ class RubricManager:
             }
         }
         
-        rubric_path = os.path.join(self.rubrics_directory, f"{assignment_id}.yaml")
+        rubric_path = os.path.join(self.rubrics_directory, f"{assignment_id}.txt")
         with open(rubric_path, 'w', encoding='utf-8') as file:
-            yaml.dump(default_rubric, file, default_flow_style=False, indent=2)
+            # Convert default rubric to txt format
+            txt_content = self._convert_to_txt_format(default_rubric)
+            file.write(txt_content)
     
     def save_rubric(self, assignment_id: str, rubric_data: Dict):
         """Save rubric data to file"""
-        rubric_path = os.path.join(self.rubrics_directory, f"{assignment_id}.yaml")
+        rubric_path = os.path.join(self.rubrics_directory, f"{assignment_id}.txt")
         with open(rubric_path, 'w', encoding='utf-8') as file:
-            yaml.dump(rubric_data, file, default_flow_style=False, indent=2)
+            txt_content = self._convert_to_txt_format(rubric_data)
+            file.write(txt_content)
+    
+    def _parse_txt_rubric(self, content: str, assignment_id: str) -> Dict:
+        """Parse txt rubric format and return structured data"""
+        # For now, create a simple default structure based on your current txt file
+        # This assumes a simple format like yours with points, description, guidelines
+        return {
+            'part_1': {
+                'total_points': 30,
+                'problem_statement': 'General homework problem',
+                'expected_response_type': 'mixed',
+                'context': 'Student should provide thoughtful analysis',
+                'criteria': {
+                    'content_quality': {
+                        'points': 15,
+                        'description': 'Quality and depth of response',
+                        'guidelines': 'Clear reasoning and understanding demonstrated'
+                    },
+                    'implementation': {
+                        'points': 10,
+                        'description': 'Code quality and correctness',
+                        'guidelines': 'Working code with proper structure'
+                    },
+                    'presentation': {
+                        'points': 5,
+                        'description': 'Clear presentation and communication',
+                        'guidelines': 'Well-organized and clearly written'
+                    }
+                }
+            }
+        }
+    
+    def _convert_to_txt_format(self, rubric_data: Dict) -> str:
+        """Convert structured rubric data to txt format"""
+        lines = []
+        for problem_id, problem_data in rubric_data.items():
+            lines.append(f"Problem: {problem_id}")
+            lines.append(f"Total Points: {problem_data['total_points']}")
+            lines.append(f"Statement: {problem_data.get('problem_statement', '')}")
+            lines.append("")
+            
+            for crit_name, crit_data in problem_data['criteria'].items():
+                lines.append(f"  {crit_name}:")
+                lines.append(f"    points: {crit_data['points']}")
+                lines.append(f"    description: \"{crit_data['description']}\"")
+                lines.append(f"    guidelines: \"{crit_data['guidelines']}\"")
+                lines.append("")
+        
+        return "\n".join(lines)

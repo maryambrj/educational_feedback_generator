@@ -61,10 +61,10 @@ def main():
     
     # Check for rubric (only required for homework mode)
     if args.mode == 'homework':
-        rubric_path = Path(f"rubrics/{args.assignment_id}.yaml")
+        rubric_path = Path(f"rubrics/{args.assignment_id}.txt")
         if not rubric_path.exists():
             print(f"❌ Rubric not found: {rubric_path}")
-            print(f"💡 Create a rubric file at: rubrics/{args.assignment_id}.yaml")
+            print(f"💡 Create a rubric file at: rubrics/{args.assignment_id}.txt")
             print("📚 See README.md for rubric format")
             return 1
         
@@ -135,7 +135,7 @@ def main():
         print("   pip install -r requirements.txt")
         print("3. Make sure you're in the project root directory")
         print("4. For homework mode, ensure rubric exists:")
-        print(f"   ls rubrics/{args.assignment_id}.yaml")
+        print(f"   ls rubrics/{args.assignment_id}.txt")
         
         return 1
 
